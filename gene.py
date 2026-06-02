@@ -9,6 +9,7 @@ OUTPUT_FILE = '项目结构.md'
 
 def generate_project_tree(root_dir):
     tree_lines = []
+    tree_lines.append("```")
     root_name = os.path.basename(root_dir)
     tree_lines.append(f"{root_name}/")
     tree_lines.append("│")
@@ -45,6 +46,7 @@ def generate_project_tree(root_dir):
             tree_lines.append(f"{prefix}│")
 
     walk(current_dir, prefix="", is_root=True)
+    tree_lines.append("```")
     return "\n".join(tree_lines)
 
 if __name__ == "__main__":
