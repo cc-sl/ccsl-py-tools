@@ -3,7 +3,7 @@ import os
 # 要忽略的文件夹
 IGNORE_DIRS = {'__pycache__', '.git', '.venv', 'venv', 'node_modules', '.idea', '.vscode', 'photos'}
 # 要忽略的文件
-IGNORE_FILES = {'.gitignore', '.DS_Store', 'gene.py', '备忘录.txt'}
+IGNORE_FILES = {'.gitignore', '.DS_Store', 'gen_tree.py', '备忘录.txt'}
 # 输出文件名
 OUTPUT_FILE = '项目结构.md'
 # 递归深度：-1 表示不限制（递归到底），正整数表示最大递归层数
