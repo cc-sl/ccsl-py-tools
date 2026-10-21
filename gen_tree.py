@@ -1,14 +1,22 @@
 import os
+import fnmatch
 
-# 要忽略的文件夹
+# 要忽略的文件夹（支持通配符：* 匹配任意字符，? 匹配单个字符，[abc] 匹配字符集）
+# 例如：'*v' 忽略所有以 v 结尾的文件夹，'temp*' 忽略所有以 temp 开头的文件夹
 IGNORE_DIRS = {'__pycache__', '.git', '.venv', 'venv', 'node_modules', '.idea', '.vscode', 'photos'}
-# 要忽略的文件
-IGNORE_FILES = {'.gitignore', '.DS_Store', 'gen_tree.py', '备忘录.txt'}
+# 要忽略的文件（同样支持通配符）
+# 例如：'*.jpg' 忽略所有 jpg 图片，'*.log' 忽略所有日志
+IGNORE_FILES = {'*.jpg','.gitignore', '.DS_Store', 'gen_tree.py', '备忘录.txt'}
 # 输出文件名
 OUTPUT_FILE = '项目结构.md'
 # 递归深度：-1 表示不限制（递归到底），正整数表示最大递归层数
 # 根目录算作第 0 层；MAX_DEPTH=1 时只列出根目录下的直接文件和文件夹，不展开子文件夹
 MAX_DEPTH = -1
+
+
+def _match_any(name, patterns):
+    """名字是否命中任意一个通配符模式（区分大小写，跨平台行为一致）"""
+    return any(fnmatch.fnmatchcase(name, pattern) for pattern in patterns)
 
 
 def generate_project_tree(root_dir):
@@ -22,12 +30,20 @@ def generate_project_tree(root_dir):
         # 列出内容：文件夹在前，文件在后
         items = sorted(os.listdir(path))
         items.sort(key=lambda x: (0 if os.path.isdir(os.path.join(path, x)) else 1, x))
-        # 过滤忽略项
-        items = [
-            item for item in items
-            if not (os.path.isdir(os.path.join(path, item)) and item in IGNORE_DIRS)
-            and not (os.path.isfile(os.path.join(path, item)) and item in IGNORE_FILES)
-        ]
+
+        # 过滤忽略项（通配符匹配）
+        filtered = []
+        for item in items:
+            item_path = os.path.join(path, item)
+            if os.path.isdir(item_path):
+                if _match_any(item, IGNORE_DIRS):
+                    continue
+            else:
+                if _match_any(item, IGNORE_FILES):
+                    continue
+            filtered.append(item)
+        items = filtered
+
         total = len(items)
         for index, item in enumerate(items):
             item_path = os.path.join(path, item)
