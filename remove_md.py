@@ -1,3 +1,4 @@
+# 移除md标记入口
 import pyperclip
 
 from core.markdown import remove_markdown

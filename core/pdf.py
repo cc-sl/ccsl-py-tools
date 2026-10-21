@@ -1,3 +1,4 @@
+# 按列表顺序合并 PDF 并写入 output_file
 from pypdf import PdfReader, PdfWriter
 
 

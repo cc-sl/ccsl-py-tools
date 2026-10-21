@@ -1,3 +1,4 @@
+# 合并pdf入口
 from pathlib import Path
 
 from core.pdf import merge_pdfs

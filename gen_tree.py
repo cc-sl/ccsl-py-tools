@@ -1,3 +1,4 @@
+# 生成项目结构入口
 import os
 from core.tree import generate_project_tree
 

@@ -1,3 +1,4 @@
+# 把 Markdown 文本转成纯文本
 import re
 
 def remove_markdown(text):
